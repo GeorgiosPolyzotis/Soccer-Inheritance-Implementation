@@ -1,72 +1,105 @@
 public class SoccerPlayer {
-    private double height;
-    private double weight;
-    private String name;
-    private boolean isGuarded;
-    private boolean isGuarding;
-    private String posInField;
-    public boolean hasBall;
 
-    public SoccerPlayer(double h, double w, String n, boolean guarded, boolean guarding, String p, boolean ball){
-        height = h;
-        weight = w;
+
+    private String name;
+    private boolean hasBall;
+    private int pace;
+    private int row;
+    private int col;
+    private String pos;
+
+    public SoccerPlayer(String n, int pace, int row, int col, String pos){
+
+        if(pace > 3){
+            this.pace = 3;
+        }
+        else{
+            this.pace = pace;
+        }
         name = n;
-        isGuarded = guarded;
-        isGuarding = guarding;
-        posInField = p;
-        hasBall = ball;
+        hasBall = false;
+        this.row = row;
+        this.col = col;
+        this.pos = pos;
     }
-    public double getHeight(){
-        return height;
-    }
+
     public boolean hasBall(){
         return hasBall;
     }
-    public double getWeight(){
-        return weight;
-    }
+
     public String getName(){
         return name;
     }
-    public boolean isGuarded(){
-        return isGuarded;
+
+    public int getPace(){
+        return pace;
     }
-    public boolean isGuarding(){
-        return isGuarding;
+    public int getRow(){ return row;}
+    public int getCol(){ return col;}
+
+    public void setRow(int r){
+        row = r;
     }
-    public String getPosInField(){
-        return posInField;
+    public void setCol(int c){
+        col = c;
+    }
+    public void setBall(boolean a){
+        hasBall = a;
     }
 
-    public void guard(SoccerPlayer s){
-        s.isGuarded = true;
-        this.isGuarding = true;
-        System.out.println(this.name + " is guarding " + s.name);
-    }
-    public void run(String where){
 
-        System.out.println(this.name + " is making a run from " + this.posInField + " to " + where);
-        this.posInField = where;
+    public void run(int toRow, int toCol){
+
+        System.out.println(this.name + " is making a run from " +row + ","+ col + " to " + toRow+","+toCol);
+        if(Math.abs(toRow-row) > pace){
+           if(row < toRow){
+               row += pace;
+           }
+           else{
+               row-= pace;
+           }
+        }
+        else{
+            row = toRow;
+        }
+        if(Math.abs(toCol-col) > pace){
+            if(col < toCol){
+                col += pace;
+            }
+            else{
+                col -= pace;
+            }
+        }
+        else{
+            col = toCol;
+        }
+
     }
     public void pass(SoccerPlayer s){
         if(this.hasBall){
-            System.out.println(this.name + " passes to " + s.name);
-            this.hasBall = false;
-            s.hasBall = true;
+            int chance = 1 + (int) Math.random()*3;
+            if(chance == 1) {
+                System.out.println(this.name + " passes to " + s.name);
+                this.hasBall = false;
+                s.hasBall = true;
+            }
+            else{
+                System.out.println("Pass unsuccessful.");
+                this.hasBall = false;
+            }
         }
         else{
             System.out.println(this.name + " doesn't have the ball");
         }
     }
     public boolean shoot(String where){
-        if(this.isGuarded && !(this.posInField.equals("goal box"))){
-            System.out.println(name + " shoots at " + where + " from " + posInField + " unsuccessfully");
-            return false;
-        }
-        else{
-            System.out.println(name + " shoots at " + where + " from " + posInField + " successfully");
+        int chance = 1 + (int) Math.random() * 6;
+        if(chance == 1) {
+            System.out.println(name + " shoots at " + where +   " successfully");
             return true;
         }
+
+        return false;
     }
 
 

@@ -1,38 +1,33 @@
 public class Attacker extends SoccerPlayer {
-    public String specialZone;
-    public boolean isOffside;
 
-    public Attacker(double h, double w, String n, boolean guarded, boolean guarding, String p, boolean ball, String zone, boolean off){
-        super(h,w,n,guarded,guarding,p,ball);
+
+    private String specialZone;
+
+    public Attacker(String n, int r, int c, String pos, String zone) {
+        super(n,3, r, c,pos);
         specialZone = zone;
-        isOffside = off;
+
     }
 
-    public String getSpecialZone(){
-        return specialZone;
-    }
-    public boolean isOffside(){
-        return isOffside;
-    }
-    public void run(String where){
-        if(isOffside){
-            System.out.println(this.getName() + " is making a run from " + this.getPosInField() + " to " + where);
-            System.out.println("Offside, run invalid");
-            isOffside = false;
-        }
-        else{
-            super.run(where);
-        }
-    }
-    public boolean shoot(String where){
-        if(this.getPosInField().equals("goal box") || this.getPosInField().equals(specialZone)){
-            System.out.println(this.getName() + " shoots at " + where + " from " + this.getPosInField() + " successfully");
-            return true;
+    public boolean shoot(String where) {
+        int chance;
+        if (where.equals(specialZone)) {
+            chance = 1 + (int) Math.random() * 3;
+            if (chance == 1) {
+                System.out.println(this.getName() + " shoots at " + where + " successfully");
+                return true;
+            }
+
+        } else {
+            chance = 1 + (int) Math.random() * 5;
+            if(chance == 1){
+                System.out.println(this.getName() + " shoots at " + where + " successfully");
+                return true;
+            }
 
         }
-        else{
-            System.out.println(this.getName() + " shoots at " + where + " from " + this.getPosInField() + " unsuccessfully");
-            return false;
-        }
+        System.out.println(this.getName() + " shoots at " + where  + " unsuccessfully");
+        return false;
+
     }
 }
